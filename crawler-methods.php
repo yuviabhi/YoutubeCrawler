@@ -1,22 +1,33 @@
 <?php
+/**
+ * handles youtube crawling
+ *
+ * @author abhisek
+ */
 
-
-function channelsListById($service, $part, $params)
-{
+function channelsListById($service, $part, $params) {
     $params = array_filter($params);
     $response = $service->channels->listChannels($part, $params);
     return json_encode($response);
 }
-// without pagination
-function playlistsListByChannelId($service, $part, $params)
-{
+
+ 
+function playlistsListByChannelId($service, $part, $params) {
     $params = array_filter($params);
     $response = $service->playlists->listPlaylists($part, $params);
     return json_encode($response);
 }
 
-// with pagination
-function retrieveAllPlaylistsListByChannelId($service , $channel_id){
+
+
+/**
+ * Retreive all Playlist by Channel ID (with pagination)
+ *
+ * @param string $service
+ * @param string $channel_id
+ * @return JsonSerializable $playlist_names_info
+ */
+function retrieveAllPlaylistsListByChannelId($service , $channel_id) {
     $playlist_names_info = playlistsListByChannelId($service, 'snippet, contentDetails, status, player', array(
         'channelId' => $channel_id,
         'maxResults' => 50
@@ -39,7 +50,6 @@ function retrieveAllPlaylistsListByChannelId($service , $channel_id){
     return json_encode($playlist_names_info);
 }
 
-// without pagination
 function playlistItemsListByPlaylistId($service, $part, $params)
 {
     $params = array_filter($params);
@@ -47,9 +57,16 @@ function playlistItemsListByPlaylistId($service, $part, $params)
     return json_encode($response);
 }
 
-//with pagination
-function retrieveAllPlaylistItemsListByPlaylistId($service, $playlist_id)
-{
+
+
+/**
+ * Retreive all Playlist items by Playlist ID (with pagination)
+ *
+ * @param string $service
+ * @param string $playlist_id
+ * @return JsonSerializable $playlist_all_videos
+ */
+function retrieveAllPlaylistItemsListByPlaylistId($service, $playlist_id) {
     $playlist_all_videos = playlistItemsListByPlaylistId($service, 'snippet,contentDetails', array(
         'maxResults' => 50,
         'playlistId' => $playlist_id
@@ -74,18 +91,6 @@ function retrieveAllPlaylistItemsListByPlaylistId($service, $playlist_id)
 }
 
 
-
-/////////////
-
-// Sample php code for videos.list
-// function videosListById($service, $part, $params) {
-//     $params = array_filter($params);
-//     $response = $service->videos->listVideos($part,$params);
-//     return json_encode($response);
-// }
-
-
-// without pagination
 function videosByChannelId($service, $part, $params) {
     $params = array_filter($params);
     $response = $service->search->listSearch($part,$params);
@@ -93,8 +98,15 @@ function videosByChannelId($service, $part, $params) {
 }
 
 
-// with pagination
-function retrieveAllVideosByChannelID($service, $channelID){
+
+/**
+ * Retreive all videos by Channel ID (with pagination)
+ *
+ * @param string $service
+ * @param string $channelID
+ * @return JsonSerializable $video_lists
+ */
+function retrieveAllVideosByChannelID($service, $channelID) {
     $video_lists = videosByChannelId($service,'snippet',
         array('channelId' => $channelID,  'maxResults' => 50));
     
