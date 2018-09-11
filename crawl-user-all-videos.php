@@ -1,6 +1,6 @@
 <?php
 //Get all videos(playlist-wise) of a user by username and save to disk according to username/playlists
-//Get all non-playlist videos of a user as well and save as Videos-Without-Playlist.json
+//Get all non-playlist videos of a user as well and save as _Videos-Without-Playlist.json
 
 require_once 'init-crawler.php';
 require_once 'crawler-methods.php';
@@ -33,10 +33,10 @@ $all_direct_uploaded_video_lists = retrieveAllVideosByChannelID($service, $chann
 if (! file_exists($savepath)) {
     mkdir($savepath, 0777, true);
 }
-if (file_put_contents($savepath . "Videos-Without-Playlist.json", $all_direct_uploaded_video_lists)) {
-    echo "Videos-Without-Playlist.json successfully saved under " . $savepath;    
+if (file_put_contents($savepath . "_Videos-Without-Playlist.json", $all_direct_uploaded_video_lists)) {
+    echo "_Videos-Without-Playlist.json successfully saved under " . $savepath;    
 } else
-    echo "\nError saving Videos-Without-Playlist.json in " . $savepath ;
+    echo "\n_Error saving Videos-Without-Playlist.json in " . $savepath ;
 
 
 
