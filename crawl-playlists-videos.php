@@ -1,5 +1,5 @@
 <?php
-//Get all videos in a platlists by playlistID
+//Get all videos in a playlists by playlistID
 
 require_once 'init-crawler.php';
 require_once 'crawler-methods.php';

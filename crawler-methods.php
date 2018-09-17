@@ -142,4 +142,32 @@ function retrieveAllVideosByChannelID($service, $channelID) {
     
     return json_encode($video_lists);
 }
+
+
+
+
+
+/**
+ * Retreive info of a video by Video ID 
+ *
+ * @param string $service
+ * @param string $channelID
+ * @return JsonSerializable $video_lists
+ */
+ function retrieveVideoInfosById($service, $channelID) {
+ 	return (videosListById($service,
+    'id,snippet,contentDetails,statistics,liveStreamingDetails,localizations,recordingDetails,status,topicDetails,player', 
+    array('id' => $channelID)));
+ 
+ }
+ 
+function videosListById($service, $part, $params) {
+    $params = array_filter($params);
+    $response = $service->videos->listVideos(
+        $part,
+        $params
+    );
+
+    return json_encode($response);
+}
 ?>
