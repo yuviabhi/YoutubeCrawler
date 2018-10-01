@@ -1,0 +1,13 @@
+{
+	"database": {
+		"host": "10.18.20.230",
+		"name": "data_acqu_system_ver1",
+		"user": "postgres",
+		"pass": "postgres"
+	},
+	"export": {
+		"AIPdspaceVersion": 5.5
+	},
+	"dataServiceEndpoint": "http://127.0.0.1:65/services",
+	"httpProxy": "http://172.16.2.30:8080"
+}
