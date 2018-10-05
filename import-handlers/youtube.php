@@ -48,40 +48,51 @@ class YoutubeImportHandler extends ImportHandler
             $ndli_doc_id = $this->generate_ndli_document_id($youtube_id);
             $document = new NDLIDocument($ndli_doc_id);
 
-            /*
-             * if($src_document->etag){
-             * $document->add_metadata($src_document->etag, "");
-             * }
-             *
-             * if($src_document->id){
-             * $document->add_metadata($src_document->id, "");
-             * }
-             *
-             * if($src_document->kind){
-             * $document->add_metadata($src_document->kind, "");
-             * }
-             */
-
-            foreach ($src_document->snippet as $field => $values) {
-                if ($field == "resourceId") {
-                    foreach ($values as $key => $value) {
-                        $document->add_metadata($field . "_" . $key, $value);
+            
+            foreach ($src_document as $k => $v){
+                
+                if($k == "snippet"){
+                    
+                    foreach ($v as $field => $values) {
+                        if ($field == "resourceId") {
+                            foreach ($values as $key => $value) {
+                                $document->add_metadata($field . "_" . $key, $value);
+                            }
+                        } else if ($field == "thumbnails") {
+                            $document->add_thumbnail_url($values->default->url);
+                        } else {
+                            if ($values) {
+                                $document->add_metadata($field, $values);
+                            }
+                        }
                     }
-                } else if ($field == "thumbnails") {
-                    $document->add_thumbnail_url($values->default->url);
+                    
+                } else if($k == "contentDetails"){
+                    
+                    if (isset($v)) {
+                        foreach ($src_document->contentDetails as $field => $values) {
+                            if ($values) {
+                                $document->add_metadata($field, $values);
+                            }
+                        }
+                    }
+                    
                 } else {
-                    if ($values) {
-                        $document->add_metadata($field, $values);
-                    }
+                    
+                    
+                  if($k){
+                    $document->add_metadata($k, $v);
+                  }
+                     
+                      
+                     
                 }
+                
             }
-            if (isset($src_document->contentDetails)) {
-                foreach ($src_document->contentDetails as $field => $values) {
-                    if ($values) {
-                        $document->add_metadata($field, $values);
-                    }
-                }
-            }
+            
+
+            
+            
 
             // FIXME contentDetails
             $this->add_document($document);
@@ -177,12 +188,12 @@ $src_id = "youtube";
 
 // remove existing data
 $source_details = new DataSource($src_id);
-if($source_details->remove_all_douments()== true){
-    echo 'Deleted all sources' . PHP_EOL;
-} else {
-    echo 'Unable to delete all sources' . PHP_EOL;
-}
-exit(0);
+// if($source_details->remove_all_douments()== true){
+//     echo 'Deleted all sources' . PHP_EOL;
+// } else {
+//     echo 'Unable to delete all sources' . PHP_EOL;
+// }
+// exit(0);
 
 
 
